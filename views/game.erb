@@ -1,0 +1,34 @@
+<h3>Welcome <%= session[:username]  %>!</h3>
+
+  <% if @show_hit_stay_buttons == false %>
+    <% until hand_total(session[:dealer_hand]) >= 17 %>
+      <% session[:dealer_hand] << session[:deck].pop %>
+    <% end %>
+  <% end %>
+
+<% session[:dealer_hand].each_with_index do |card, index| %>
+  <% if @show_hit_stay_buttons %>
+    <% if index == 0 %>
+      <img src="http://localhost:9393/images/cards/cover.jpg"/>
+      <% else %>
+        <img src= <%= "http://localhost:9393/images/cards/" + card_path(card) %>>
+      <% end %>
+  <% else %>
+    <img src= <%= "http://localhost:9393/images/cards/" + card_path(card) %>>
+  <% end %>
+<% end %><br>
+<%= hand_total(session[:dealer_hand]) %><br>
+
+<% session[:player_hand].each do |card| %>
+  <img src= <%= "http://localhost:9393/images/cards/" + card_path(card) %>>
+<% end %><br>
+<%= hand_total(session[:player_hand]) %>
+
+<% if @show_hit_stay_buttons %>
+  <form action='/game/player/hit' method="post">
+    <input type='submit' class='btn' value='Hit'/>
+  </form>
+  <form action='/game/player/stay' method="post">
+    <input type='submit' class='btn' value='Stay'/>
+  </form>
+<% end %>
